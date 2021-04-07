@@ -1,4 +1,4 @@
-const { User } = require("../../models");
+const { User } = require("../../entities/models");
 const bcrypt = require("bcrypt-nodejs");
 
 const passwordEncoding = async (password) => {
@@ -23,4 +23,3 @@ module.exports = {
   passwordCompare,
   findOneByEmail,
 };
-

@@ -1,4 +1,4 @@
-const { User } = require("../../models");
+const { User } = require("../../entities/models");
 const query = require("./query");
 const token = require("./token");
 
@@ -23,7 +23,8 @@ const login = async (req, res) => {
   try {
     const findUser = await query.findOneByEmail(email);
     if (!findUser) return res.status(400).end();
-    if (!(query.passwordCompare(password, findUser.password))) return res.status(400).end();
+    if (!query.passwordCompare(password, findUser.password))
+      return res.status(400).end();
 
     const accessToken = await token.mkAccess(req, findUser);
     const refreshToken = await token.mkRefresh(req, findUser);

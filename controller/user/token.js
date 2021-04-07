@@ -4,7 +4,7 @@ const mkAccess = async (req, user) => {
   const secret = req.app.get("jwt-secret");
   const token = await jwt.sign(
     {
-      userId: user.userId,
+      email: user.email,
       name: user.name,
     },
     secret,

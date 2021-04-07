@@ -1,61 +1,54 @@
-const { User } = require("../../model/user");
-const mkToken = require("./mkToken");
-
+const { User } = require("../../models");
+const query = require("./query");
+const token = require("./token");
 
 const register = async (req, res) => {
+  const { email, password, name } = req.body;
+  try {
+    // const findUser = await query.findOneByEmail({ email: email });
+    // if (findUser) res.status(400).end();
+    const encodedPassword = await query.passwordEncoding(password);
+    await User.create({ email, password: encodedPassword, name });
 
-    const user = new User(req.body);
-    try {
-        const findUser = await User.findOne({ email: user.email });
-        if (findUser) return res.status(409).end();
-
-        user.password = user.passwordEncoding({ password: user.password })
-        await user.save();
-    } catch (err) {
-        console.log(err);
-        res.status(400).end();
-    }
     res.status(200).end();
+  } catch (e) {
+    console.log(e);
+    res.status(409).end();
+  }
 };
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        const findUser = await User.findOne({ email: email });
-        if (!findUser) return res.status(400).end();
-        if (!(findUser.comparePassword(password, findUser.password))) return res.status(400).end();
-        const accessToken = await mkToken.mkAccess(req, findUser);
-        const refreshToken = await mkToken.mkRefresh(req, findUser);
+  try {
+    const findUser = await query.findOneByEmail(email);
+    if (!findUser) return res.status(400).end();
+    if (!(query.passwordCompare(password, findUser.password))) return res.status(400).end();
 
-        res.status(200).json({ accessToken, refreshToken });
-    } catch (err) {
-        console.log(err);
+    const accessToken = await token.mkAccess(req, findUser);
+    const refreshToken = await token.mkRefresh(req, findUser);
+    res.status(200).json({ accessToken, refreshToken });
+  } catch (err) {
+    console.log(err);
 
-        res.status(400).end();
-    }
+    res.status(400).end();
+  }
 };
 
 const refresh = async (req, res, next) => {
-    const user = await User.findOne(req.email);
-    const accessToken = await mkToken.mkAccess(req, user);
-    res.status(200).json({ accessToken });
+  const user = await query.findOneByEmail(req.decoded.email);
+  const accessToken = await token.mkAccess(req, user);
+  res.status(200).json({ accessToken });
 };
 
 const check = async (req, res, next) => {
-    const user = await User.findOne(req.email);
-    res.status(200).json({ email: user.email });
+  const user = await query.findOneByEmail(req.decoded.email);
+  res.status(200).json({ email: user.email });
 };
 
-const token = async (req, res, next) => {
-    res.status(200).end();
-
-}
-
 module.exports = {
-    register,
-    login,
-    refresh,
-    check,
-    token,
-}
+  register,
+  login,
+  refresh,
+  check,
+};

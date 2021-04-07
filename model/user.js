@@ -1,38 +1,18 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
-
-const userSchema = mongoose.Schema({
-    name: {
-        type: String,
-        maxlength: 50
-    },
+module.exports = (sequelize, DataTypes) => {
+  return sequelize.define("user", {
     email: {
-        type: String,
-        trim: true,
-        unique: 1
+      type: DataTypes.STRING(20),
+      unique: true,
+      primaryKey: true,
     },
     password: {
-        type: String,
-        minglength: 5
+      type: DataTypes.STRING(100),
     },
-    lastname: {
-        type: String,
-        maxlength: 50
+    name: {
+      type: DataTypes.STRING(10),
     },
-    role: {
-        type: Number,
-        default: 0
-    },
-    image: String,
-})
 
-userSchema.methods.passwordEncoding = password => {
-    return bcrypt.hashSync(password.password);;
+  }, {
+    timestamps: false
+  });
 };
-
-userSchema.methods.comparePassword = async (password, encoded) => {
-    return bcrypt.compareSync(password, encoded);
-}
-
-const User = mongoose.model('User', userSchema);
-module.exports = { User }

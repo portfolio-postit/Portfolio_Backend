@@ -2,6 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "project",
     {
+      id: {
+        type: DataTypes.STRING(100),
+        unique: true,
+        primaryKey: true,
+      },
       email: {
         type: DataTypes.STRING(100),
       },

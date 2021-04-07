@@ -5,13 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING(100),
       },
-      name: {
+      origin_name: {
         type: DataTypes.STRING(10),
       },
       file_name: {
-        type: DataTypes.STRING(100),
-      },
-      file_url: {
         type: DataTypes.STRING(100),
       },
       skill_name: {

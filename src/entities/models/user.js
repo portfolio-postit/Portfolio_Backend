@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "user",
     {
       email: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(100),
         unique: true,
         primaryKey: true,
       },
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
       },
       name: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(30),
       },
     },
     {

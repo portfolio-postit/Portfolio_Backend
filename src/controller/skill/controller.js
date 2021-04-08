@@ -1,14 +1,32 @@
 const _ = require("lodash");
 const { Skill } = require("../../entities/models");
 const query = require("./query");
+const Blob = require("node-blob");
+
+// const s3 = require("../../config/s3");
+const AWS = require("aws-sdk");
 
 const write = async (req, res) => {
   try {
-    console.log(req.origin_name);
+    // console.log(Blob([req.file.buffer]));
+    const blob = req.file.buffer;
+    const params = {
+      Bucket: "toinin",
+      Key: "req.file.originalname",
+      Body: blob,
+    };
+    AWS.config.update({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    });
+    const s3 = new AWS.S3();
+    s3.upload(params, function (err, data) {
+      console.log(err, data);
+    });
     await Skill.create({
       email: req.decoded.email,
-      origin_name: req.origin_name,
-      file_name: req.filename,
+      origin_name: req.file.originalname,
+      file_name: req.origin_name,
       skill_name: req.body.skill_name,
       skill_score: req.body.skill_score,
       skill_type: req.body.skill_type,

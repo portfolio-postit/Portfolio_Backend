@@ -1,5 +1,4 @@
 const s3 = require("../../config/s3");
-
 const { Skill } = require("../../entities/models");
 
 const deleteS3 = async (req, res) => {

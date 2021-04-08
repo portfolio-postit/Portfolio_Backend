@@ -3,5 +3,5 @@ const controller = require("../controller/about/controller");
 const auth = require("../middleware/auth");
 router.post("/", auth.authMiddleware, controller.createAbout);
 router.get("/:email", controller.readAbout);
-router.delete("/", auth.authMiddleware);
+router.delete("/", auth.authMiddleware, controller.deleteAbout);
 module.exports = router;

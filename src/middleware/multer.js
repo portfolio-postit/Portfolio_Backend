@@ -11,14 +11,14 @@ const upload = multer({
     bucket: "toinin",
     key: function (req, file, cb) {
       const filename = uuid();
-      // path.extname 쓰는 거 추천
       req.filename = filename + extname(file.originalname);
       req.origin_name = file.originalname;
       const ext = file.mimetype.split("/")[1];
       if (!["png", "jpg", "jpeg", "gif", "bmp"].includes(ext)) {
         return cb(new Error("Only images are allowed"));
       }
-      cb(null, req.filename);
+      console.log(req);
+      // cb(null, req.filename);
     },
   }),
   acl: "public-read-write",

@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       skill_score: {
         type: DataTypes.STRING(10),
       },
+      skill_type: {
+        type: DataTypes.STRING(10),
+      },
     },
 
     {

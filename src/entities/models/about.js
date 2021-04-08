@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       git_url: {
         type: DataTypes.STRING(20),
       },
+      file_name: {
+        type: DataTypes.STRING(300),
+      },
     },
     {
       timestamps: false,

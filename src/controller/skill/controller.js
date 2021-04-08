@@ -11,6 +11,7 @@ const write = async (req, res) => {
       file_name: req.filename,
       skill_name: req.body.skill_name,
       skill_score: req.body.skill_score,
+      skill_type: req.body.skill_type,
     });
     res.status(200).end();
   } catch (e) {
@@ -19,7 +20,7 @@ const write = async (req, res) => {
   }
 };
 
-const showSkill = async (req, res) => {
+const showAllSkill = async (req, res) => {
   try {
     const skill = await query.findByEmail(req.query.email);
     if (!skill) res.status(400);
@@ -31,6 +32,30 @@ const showSkill = async (req, res) => {
         "origin_name",
         "skill_name",
         "skill_score",
+        "skill_type",
+        "email",
+      ]);
+    });
+    res.status(200).send({ response });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
+
+const showTypeSkill = async (req, res) => {
+  try {
+    const skill = await query.findByType(req.query.email, req.query.type);
+    if (!skill) res.status(400);
+    const response = _.map(skill, (e) => {
+      e.url = process.env.S3URL + e.file_name;
+      return _.pick(e, [
+        "id",
+        "url",
+        "origin_name",
+        "skill_name",
+        "skill_score",
+        "skill_type",
         "email",
       ]);
     });
@@ -42,5 +67,6 @@ const showSkill = async (req, res) => {
 };
 module.exports = {
   write,
-  showSkill,
+  showAllSkill,
+  showTypeSkill,
 };

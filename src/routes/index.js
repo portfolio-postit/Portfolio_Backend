@@ -7,5 +7,5 @@ const skill = require("./skill");
 router.use("/user", user);
 router.use("/skill", skill);
 // router.use("/project", project);
-// router.use("/about", about);
+router.use("/about", about);
 module.exports = router;

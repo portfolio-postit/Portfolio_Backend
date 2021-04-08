@@ -1,7 +1,7 @@
-// const router = require("express")();
-// const controller = require("../controller/skill/controller");
-// const auth = require("../middleware/auth");
-// router.post("/", auth.authMiddleware);
+const router = require("express")();
+const controller = require("../controller/about/controller");
+const auth = require("../middleware/auth");
+router.post("/", auth.authMiddleware, controller.createAbout);
 // router.get("/", controller.showSkill);
-// router.delete("/", auth.authMiddleware);
-// module.exports = router;
+router.delete("/", auth.authMiddleware);
+module.exports = router;

@@ -1,4 +1,4 @@
-const { User } = require("../../entities/models");
+const { User, About } = require("../../entities/models");
 
 const findOneByEmail = async (email) => {
   try {
@@ -8,7 +8,15 @@ const findOneByEmail = async (email) => {
     throw e;
   }
 };
-
+const findOneByAboutEmail = async (email) => {
+  try {
+    const about = await About.findOne({ where: { email } });
+    return about;
+  } catch (e) {
+    throw e;
+  }
+};
 module.exports = {
   findOneByEmail,
+  findOneByAboutEmail,
 };

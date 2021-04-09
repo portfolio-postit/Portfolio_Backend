@@ -11,12 +11,11 @@ const typeMiddleware = async (req, res, next) => {
       type == "TOOL" ||
       type == "FRAMEWORK"
     ) {
-      console.log("A");
+      next();
     } else {
-      console.log("z");
-      res.status(402).end();
+      console.log("type error");
+      res.status(402).json({ msssage: "type error" });
     }
-    next();
   } catch (e) {
     res.status(401).json({ message: e.message });
   }

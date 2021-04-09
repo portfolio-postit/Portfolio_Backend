@@ -2,6 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "skill",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,

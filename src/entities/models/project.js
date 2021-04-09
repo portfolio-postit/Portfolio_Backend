@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
       },
     },
-
     {
+      logging: false,
       timestamps: false,
     }
   );

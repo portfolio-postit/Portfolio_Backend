@@ -8,7 +8,7 @@ const findOneByEmail = async (email) => {
     throw e;
   }
 };
-const findOneByAboutId = async (id) => {
+const findOneByProjectId = async (id) => {
   try {
     const project = await Project.findOne({ where: { id: id } });
     return project;
@@ -24,8 +24,17 @@ const findAllByTagId = async (id) => {
     throw e;
   }
 };
+const findAllByProjectEmail = async (email) => {
+  try {
+    const project = await Project.findAll({ where: { email } });
+    return project;
+  } catch (e) {
+    throw e;
+  }
+};
 module.exports = {
   findOneByEmail,
-  findOneByAboutId,
+  findOneByProjectId,
   findAllByTagId,
+  findAllByProjectEmail,
 };

@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     "project",
     {
       id: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         unique: true,
         primaryKey: true,
       },

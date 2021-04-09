@@ -94,8 +94,6 @@ const deleteProject = async (req, res, next) => {
     const project = await query.findOneByProjectId(req.params.id);
     if (user.email != project.email) res.status(400).end();
 
-    const project_tag = await query.findAllByTagId(project.id);
-
     await Project_tag.destroy({
       where: { projectId: project.id },
     });
@@ -116,10 +114,25 @@ const deleteProject = async (req, res, next) => {
   }
 };
 
+const deleteTag = async (req, res, next) => {
+  try {
+    const user = await query.findOneByEmail(req.decoded.email);
+    const project_tag = await Project_tag.findOne({ id: req.params.id });
+    const project = await Project.findOne({ id: project_tag.projectId });
+    if (user.email != project.email) res.status(400).end();
+    await Project_tag.destroy({
+      where: { projectId: project.id },
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
 module.exports = {
   createProject,
   readDetailProject,
   deleteProject,
   addTag,
+  deleteTag,
   readAllRroject,
 };

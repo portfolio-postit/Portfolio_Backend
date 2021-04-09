@@ -47,21 +47,12 @@ const createProject = async (req, res, next) => {
 
 const readProject = async (req, res) => {
   try {
-    const about = await query.findAllByAboutEmaill(req.params.id);
-    //tag 추가해야됨
-    const response = _.map(about, (e) => {
-      e.url = process.env.S3URL + e.file_name;
-      return _.pick(e, [
-        "url",
-        "email",
-        "link",
-        "git_url",
-        "project_title",
-        "prorject_content",
-      ]);
-    });
-    res.status(200).send({ response });
-    res.status(200).json(about);
+    const project = await query.findOneByAboutId(req.params.id);
+    const project_tag = await query.findAllByTagId(project.id);
+    const data = project;
+    data.dataValues.url = process.env.S3URL + project.file_name;
+    data.dataValues.tag = project_tag;
+    res.status(200).json({ data });
   } catch (e) {
     console.log(e);
     res.status(400).end();

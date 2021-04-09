@@ -45,6 +45,26 @@ const createProject = async (req, res, next) => {
   }
 };
 
+const addTag = async (req, res, next) => {
+  try {
+    const user = await query.findOneByEmail(req.decoded.email);
+    const project = await query.findOneByProjectId(req.params.id);
+    if (!user) res.status(400).end();
+    if (user.email != project.email) res.stats(400).end();
+    const { project_tag } = req.body;
+    await project_tag.map((e) => {
+      Project_tag.create({
+        tag: e,
+        projectId: project.id,
+      });
+    });
+    res.status(200).end();
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
+
 const readDetailProject = async (req, res) => {
   try {
     const project = await query.findOneByAboutId(req.params.id);
@@ -59,7 +79,7 @@ const readDetailProject = async (req, res) => {
   }
 };
 
-const deleteProject = async (req, res) => {
+const deleteProject = async (req, res, next) => {
   try {
     const user = await query.findOneByEmail(req.decoded.email);
     const project = await Project.findOne({ where: { id: req.query.id } });
@@ -83,4 +103,5 @@ module.exports = {
   createProject,
   readDetailProject,
   deleteProject,
+  addTag,
 };

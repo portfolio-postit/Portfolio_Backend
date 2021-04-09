@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       link: {
         type: DataTypes.STRING(100),
       },
-      project_name: {
+      project_title: {
         type: DataTypes.STRING(100),
       },
       project_content: {

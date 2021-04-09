@@ -45,7 +45,7 @@ const createProject = async (req, res, next) => {
   }
 };
 
-const readProject = async (req, res) => {
+const readDetailProject = async (req, res) => {
   try {
     const project = await query.findOneByAboutId(req.params.id);
     const project_tag = await query.findAllByTagId(project.id);
@@ -81,6 +81,6 @@ const deleteProject = async (req, res) => {
 
 module.exports = {
   createProject,
-  readProject,
+  readDetailProject,
   deleteProject,
 };

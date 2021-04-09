@@ -1,15 +1,15 @@
 const { User } = require("../../entities/models");
-const query = require("./query");
+const service = require("./service");
+const repositories = require("../../entities/repositories/user");
 const token = require("./token");
 
 const register = async (req, res) => {
   const { email, password, name } = req.body;
   try {
-    // const findUser = await query.findOneByEmail({ email: email });
-    // if (findUser) res.status(400).end();
-    const encodedPassword = await query.passwordEncoding(password);
+    const findUser = await repositories.findOneByEmail(email);
+    if (findUser) res.status(400).end();
+    const encodedPassword = await service.passwordEncoding(password);
     await User.create({ email, password: encodedPassword, name });
-
     res.status(200).end();
   } catch (e) {
     console.log(e);
@@ -21,9 +21,9 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const findUser = await query.findOneByEmail(email);
+    const findUser = await repositories.findOneByEmail(email);
     if (!findUser) return res.status(400).end();
-    if (!query.passwordCompare(password, findUser.password))
+    if (!service.passwordCompare(password, findUser.password))
       return res.status(400).end();
 
     const accessToken = await token.mkAccess(req, findUser);
@@ -37,13 +37,13 @@ const login = async (req, res) => {
 };
 
 const refresh = async (req, res, next) => {
-  const user = await query.findOneByEmail(req.decoded.email);
+  const user = await repositories.findOneByEmail(req.decoded.email);
   const accessToken = await token.mkAccess(req, user);
   res.status(200).json({ accessToken });
 };
 
 const check = async (req, res, next) => {
-  const user = await query.findOneByEmail(req.decoded.email);
+  const user = await repositories.findOneByEmail(req.decoded.email);
   res.status(200).json({ email: user.email });
 };
 

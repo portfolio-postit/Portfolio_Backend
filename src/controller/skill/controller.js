@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const { Skill } = require("../../entities/models");
-const query = require("./query");
+const repositories = require("../../entities/repositories/skill");
 const s3 = require("../../config/s3");
 const uuid = require("uuid4");
 const { extname } = require("path");
@@ -36,8 +36,10 @@ const write = async (req, res) => {
 
 const showAllSkill = async (req, res) => {
   try {
-    const skill = await query.findByEmail(req.query.email);
+    const { email } = req.qeury;
+    const skill = await repositories.findAllByEmail(email);
     if (!skill) res.status(400);
+
     const response = _.map(skill, (e) => {
       e.url = process.env.S3URL + e.file_name;
       return _.pick(e, [
@@ -59,8 +61,10 @@ const showAllSkill = async (req, res) => {
 
 const showTypeSkill = async (req, res) => {
   try {
-    const skill = await query.findByType(req.query.email, req.query.type);
+    const { email, type } = req.qeury;
+    const skill = await repositories.findAllByType(email, type);
     if (!skill) res.status(400);
+
     const response = _.map(skill, (e) => {
       e.url = process.env.S3URL + e.file_name;
       return _.pick(e, [
@@ -79,6 +83,7 @@ const showTypeSkill = async (req, res) => {
     res.status(400).end();
   }
 };
+
 module.exports = {
   write,
   showAllSkill,

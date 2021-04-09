@@ -3,26 +3,31 @@ module.exports = (sequelize, DataTypes) => {
     "skill",
     {
       email: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
+        allowNull: false,
       },
-      origin_name: {
-        type: DataTypes.STRING(10),
+      original_file_name: {
+        type: DataTypes.STRING,
       },
       file_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
       },
       skill_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       skill_score: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       skill_type: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
 
     {
+      logging: false,
       timestamps: false,
     }
   );

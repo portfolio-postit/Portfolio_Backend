@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       project_content: {
         type: DataTypes.STRING(100),
       },
+      file_name: {
+        type: DataTypes.STRING(100),
+      },
     },
 
     {

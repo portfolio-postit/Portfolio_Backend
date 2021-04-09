@@ -1,4 +1,4 @@
-const { User } = require("../../entities/models");
+const { User, Project } = require("../../entities/models");
 
 const findOneByEmail = async (email) => {
   try {
@@ -8,7 +8,16 @@ const findOneByEmail = async (email) => {
     throw e;
   }
 };
+const findAllByAboutEmaill = async (email) => {
+  try {
+    const project = await Project.findAll({ where: { email } });
+    return project;
+  } catch (e) {
+    throw e;
+  }
+};
 
 module.exports = {
   findOneByEmail,
+  findAllByAboutEmaill,
 };

@@ -21,9 +21,9 @@ const createProject = async (req, res, next) => {
       Body: blob,
     };
 
-    // s3.upload(params, function (err, data) {
-    //   console.log(err, data);
-    // });
+    s3.upload(params, function (err, data) {
+      console.log(err, data);
+    });
 
     project = await Project.create({
       email: user.email,
@@ -47,12 +47,20 @@ const createProject = async (req, res, next) => {
 
 const readProject = async (req, res) => {
   try {
-    // const about = await query.findOneByAboutEmail(req.params.email);
-    // const response = _.map(about, (e) => {
-    //   e.url = process.env.S3URL + e.file_name;
-    //   return _.pick(e, ["url", "username", "phone_number", "git_url", "email"]);
-    // });
-    // res.status(200).send({ response });
+    const about = await query.findAllByAboutEmaill(req.params.id);
+    //tag 추가해야됨
+    const response = _.map(about, (e) => {
+      e.url = process.env.S3URL + e.file_name;
+      return _.pick(e, [
+        "url",
+        "email",
+        "link",
+        "git_url",
+        "project_title",
+        "prorject_content",
+      ]);
+    });
+    res.status(200).send({ response });
     res.status(200).json(about);
   } catch (e) {
     console.log(e);

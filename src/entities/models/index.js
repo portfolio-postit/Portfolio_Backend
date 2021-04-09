@@ -26,7 +26,7 @@ db.User.hasMany(db.Project, { foreignKey: "email", targetKey: "email" });
 db.Project.belongsTo(db.User, { foreignKey: "email" });
 db.Project.hasMany(db.Project_tag, {
   foreignKey: "projectId",
-  targetKey: "id",
+  targetKey: "id  ",
 });
 db.Project_tag.belongsTo(db.Project, { foreignKey: "projectId" });
 module.exports = db;

@@ -10,6 +10,7 @@ router.post(
   controller.createProject
 );
 router.post("/tag/:id", auth.authMiddleware, controller.addTag);
+router.get("/all/:email", controller.readAllRroject);
 router.get("/detail/:id", controller.readDetailProject);
 router.delete("/", auth.authMiddleware);
 module.exports = router;

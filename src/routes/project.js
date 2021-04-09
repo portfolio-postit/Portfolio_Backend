@@ -9,6 +9,7 @@ router.post(
   upload.single("image"),
   controller.createProject
 );
-router.get("/:id", controller.readDetailProject);
+router.post("/tag/:id", auth.authMiddleware, controller.addTag);
+router.get("/detail/:id", controller.readDetailProject);
 router.delete("/", auth.authMiddleware);
 module.exports = router;

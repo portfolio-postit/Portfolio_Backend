@@ -9,8 +9,12 @@ router.post(
   upload.single("image"),
   controller.createProject
 );
+
 router.post("/tag/:id", auth.authMiddleware, controller.addTag);
-router.get("/all/:email", controller.readAllRroject);
+router.delete("/tag/:id", auth.authMiddleware);
+
 router.get("/detail/:id", controller.readDetailProject);
-router.delete("/", auth.authMiddleware);
+router.delete("/detail/:id", auth.authMiddleware, controller.deleteProject);
+
+router.get("/all/:email", controller.readAllRroject);
 module.exports = router;

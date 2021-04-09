@@ -52,17 +52,17 @@ const readAbout = async (req, res) => {
   }
 };
 
-const deleteAbout = async (req, res) => {
+const deleteAbout = async (req, res, next) => {
   try {
     const user = await query.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
-    const about = await Skill.findOne({ where: { email: user.email } });
-    about.destroy({
+    const about = await About.findOne({ where: { email: user.email } });
+    About.destroy({
       where: { username: user.name },
     });
     s3.deleteObject({
       Bucket: "toinin",
-      Key: file.file_name,
+      Key: about.file_name,
     }).promise;
     res.status(200).end();
   } catch (e) {

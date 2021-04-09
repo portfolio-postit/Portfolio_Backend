@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     "project",
     {
       id: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         unique: true,
         primaryKey: true,
       },
@@ -13,10 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       link: {
         type: DataTypes.STRING(100),
       },
-      project_name: {
+      project_title: {
         type: DataTypes.STRING(100),
       },
       project_content: {
+        type: DataTypes.STRING(100),
+      },
+      file_name: {
         type: DataTypes.STRING(100),
       },
     },

@@ -1,5 +1,4 @@
 const { About } = require("../../entities/models");
-const about = require("../../entities/models/about");
 const query = require("./query");
 const uuid = require("uuid4");
 const { extname } = require("path");
@@ -22,6 +21,7 @@ const createAbout = async (req, res, next) => {
     s3.upload(params, function (err, data) {
       console.log(err, data);
     });
+
     await About.create({
       username: user.name,
       phone_number,
@@ -52,19 +52,19 @@ const readAbout = async (req, res) => {
   }
 };
 
-const deleteAbout = async (req, res) => {
+const deleteAbout = async (req, res, next) => {
   try {
     const user = await query.findOneByEmail(req.decoded.email);
-
     if (!user) res.status(400).end();
-    about.destroy({
+    const about = await About.findOne({ where: { email: user.email } });
+    About.destroy({
       where: { username: user.name },
     });
-    const about = await Skill.findOne({ where: { email: user.email } });
     s3.deleteObject({
       Bucket: "toinin",
-      Key: file.file_name,
+      Key: about.file_name,
     }).promise;
+    res.status(200).end();
   } catch (e) {
     console.log(e);
     res.status(400).end();

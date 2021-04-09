@@ -1,31 +1,20 @@
 const _ = require("lodash");
 const { Skill } = require("../../entities/models");
 const repositories = require("../../entities/repositories/skill");
-const s3 = require("../../config/s3");
-const uuid = require("uuid4");
-const { extname } = require("path");
+const { uploadFile } = require("./service");
 
 const write = async (req, res) => {
   try {
-    const blob = req.file.buffer;
-    const filename = uuid();
-    const uuidname = filename + extname(req.file.originalname);
-    const params = {
-      Bucket: "toinin",
-      Key: uuidname,
-      Body: blob,
-    };
+    const { skill_name, skill_score, skill_type } = req.body;
+    const uuidname = await uploadFile(req.file);
 
-    s3.upload(params, function (err, data) {
-      console.log(err, data);
-    });
     await Skill.create({
       email: req.decoded.email,
-      origin_name: req.file.originalname,
+      original_file_name: req.file.originalname,
       file_name: uuidname,
-      skill_name: req.body.skill_name,
-      skill_score: req.body.skill_score,
-      skill_type: req.body.skill_type,
+      skill_name: skill_name,
+      skill_score: skill_score,
+      skill_type: skill_type,
     });
     res.status(200).end();
   } catch (e) {
@@ -45,7 +34,7 @@ const showAllSkill = async (req, res) => {
       return _.pick(e, [
         "id",
         "url",
-        "origin_name",
+        "original_file_name",
         "skill_name",
         "skill_score",
         "skill_type",
@@ -70,7 +59,7 @@ const showTypeSkill = async (req, res) => {
       return _.pick(e, [
         "id",
         "url",
-        "origin_name",
+        "original_file_name",
         "skill_name",
         "skill_score",
         "skill_type",

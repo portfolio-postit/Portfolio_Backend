@@ -21,6 +21,7 @@ const createAbout = async (req, res, next) => {
     s3.upload(params, function (err, data) {
       console.log(err, data);
     });
+
     await About.create({
       username: user.name,
       phone_number,

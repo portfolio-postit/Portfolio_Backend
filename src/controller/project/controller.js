@@ -67,12 +67,21 @@ const addTag = async (req, res, next) => {
 
 const readDetailProject = async (req, res) => {
   try {
-    const project = await query.findOneByAboutId(req.params.id);
+    const project = await query.findOneByProjectId(req.params.id);
     const project_tag = await query.findAllByTagId(project.id);
     const data = project;
     data.dataValues.url = process.env.S3URL + project.file_name;
     data.dataValues.tag = project_tag;
     res.status(200).json({ data });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
+const readAllRroject = async (req, res) => {
+  try {
+    const project = await query.findAllByProjectEmail(req.params.email);
+    res.status(200).json({ project });
   } catch (e) {
     console.log(e);
     res.status(400).end();
@@ -104,4 +113,5 @@ module.exports = {
   readDetailProject,
   deleteProject,
   addTag,
+  readAllRroject,
 };

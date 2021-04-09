@@ -91,16 +91,24 @@ const readAllRroject = async (req, res) => {
 const deleteProject = async (req, res, next) => {
   try {
     const user = await query.findOneByEmail(req.decoded.email);
-    const project = await Project.findOne({ where: { id: req.query.id } });
+    const project = await query.findOneByProjectId(req.params.id);
+    if (user.email != project.email) res.status(400).end();
 
-    if (!user) res.status(400).end();
-    project.destroy({
-      where: { project },
+    const project_tag = await query.findAllByTagId(project.id);
+
+    await Project_tag.destroy({
+      where: { projectId: project.id },
     });
-    // s3.deleteObject({
-    //   Bucket: "toinin",
-    //   Key: file.file_name,
-    // }).promise;
+
+    await Project.destroy({
+      where: { id: project.id },
+    });
+
+    s3.deleteObject({
+      Bucket: "toinin",
+      Key: project.file_name,
+    }).promise;
+
     res.status(200).end();
   } catch (e) {
     console.log(e);

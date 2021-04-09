@@ -1,12 +1,13 @@
 const router = require("express")();
 const auth = require("../middleware/auth");
-var multer = require("multer");
-var upload = multer();
-router.about(
+const multer = require("multer");
+const upload = multer();
+const controller = require("../controller/project/controller");
+router.post(
   "/",
   auth.authMiddleware,
-  upload.single("image")
-  //   controller.createAbout
+  upload.single("image"),
+  controller.createProject
 );
 // router.get("/:email");
 router.delete("/", auth.authMiddleware);

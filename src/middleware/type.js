@@ -1,6 +1,6 @@
 const typeMiddleware = async (req, res, next) => {
   try {
-    const type = req.body.type;
+    const type = req.body.skill_type;
     if (!type) {
       res.status(403).json({ message: "type 빔" });
     }

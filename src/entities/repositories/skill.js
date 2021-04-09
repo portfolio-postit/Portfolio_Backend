@@ -1,6 +1,6 @@
 const { Skill } = require("../../entities/models");
 
-const findByEmail = async (email) => {
+const findAllByEmail = async (email) => {
   try {
     const skill = await Skill.findAll({ where: { email } });
     return skill;
@@ -9,7 +9,7 @@ const findByEmail = async (email) => {
   }
 };
 
-const findByType = async (email, type) => {
+const findALlByType = async (email, type) => {
   try {
     const skill = await Skill.findAll({ where: { email, skill_type: type } });
     return skill;
@@ -18,6 +18,6 @@ const findByType = async (email, type) => {
   }
 };
 module.exports = {
-  findByType,
-  findByEmail,
+  findALlByType,
+  findAllByEmail,
 };

@@ -9,7 +9,7 @@ const findAllByEmail = async (email) => {
   }
 };
 
-const findALlByType = async (email, type) => {
+const findAllByType = async (email, type) => {
   try {
     const skill = await Skill.findAll({ where: { email, skill_type: type } });
     return skill;
@@ -17,7 +17,18 @@ const findALlByType = async (email, type) => {
     throw e;
   }
 };
+
+const findOneById = async (id) => {
+  try {
+    const skill = await Skill.findOne({ where: { id } });
+    return skill;
+  } catch (e) {
+    throw e;
+  }
+};
+
 module.exports = {
-  findALlByType,
+  findAllByType,
   findAllByEmail,
+  findOneById,
 };

@@ -4,7 +4,6 @@ const typeMiddleware = async (req, res, next) => {
     if (!type) {
       res.status(403).json({ message: "type 빔" });
     }
-    console.log(type);
     if (
       type == "MOSTLANGUAGE" ||
       type == "SUBLANGUAGE" ||

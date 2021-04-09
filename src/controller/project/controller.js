@@ -8,12 +8,23 @@ const createProject = async (req, res, next) => {
   try {
     const { link, project_title, project_content } = req.body;
     const user = await query.findOneByEmail(req.decoded.email);
+    if (!user) res.status(400).end();
 
-    // s3.upload(params, function (err, data) {
-    //   console.log(err, data);
-    // });
+    const filename = uuid();
+    const uuidname = filename + extname(req.file.originalname);
+    const params = {
+      Bucket: "toinin",
+      Key: uuidname,
+      Body: blob,
+    };
+
+    s3.upload(params, function (err, data) {
+      console.log(err, data);
+    });
+
     await Project.create({
       email: user.email,
+      file_name: uuidname,
       link,
       email: user.email,
       project_title,

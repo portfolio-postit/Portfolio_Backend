@@ -9,6 +9,6 @@ router.post(
   upload.single("image"),
   controller.createProject
 );
-// router.get("/:email");
+router.get("/:id", controller.readProject);
 router.delete("/", auth.authMiddleware);
 module.exports = router;

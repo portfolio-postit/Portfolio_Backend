@@ -59,8 +59,21 @@ const deleteAbout = async (req, res, next) => {
     res.status(400).end();
   }
 };
+
+const changeAbout = async (req, res, next) => {
+  try {
+    const user = await userRepositroes.findOneByEmail(req.decoded.email);
+    if (!user) res.status(400).end();
+    const { phone_number, git_url } = req.body;
+    About.update({ phone_number, git_url }, { where: { email: user.email } });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
 module.exports = {
   createAbout,
   readAbout,
   deleteAbout,
+  changeAbout,
 };

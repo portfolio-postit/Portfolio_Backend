@@ -12,6 +12,7 @@ router.post(
 
 router.post("/tag/:id", auth.authMiddleware, controller.addTag);
 router.delete("/tag/:id", auth.authMiddleware, controller.deleteTag);
+router.patch("/tag/:id", auth.authMiddleware, controller.changeTag);
 
 router.get("/detail/:id", controller.readDetailProject);
 router.delete("/detail/:id", auth.authMiddleware, controller.deleteProject);

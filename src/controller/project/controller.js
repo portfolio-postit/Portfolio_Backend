@@ -137,11 +137,13 @@ const deleteTag = async (req, res, next) => {
 const changeTag = async (req, res, next) => {
   try {
     const user = await userRepositroes.findOneByEmail(req.decoded.email);
-    const tag = await tagRepositories.findOneById(req.params.id);
-    const project = await projectRepositories.findOneById(tag.projectId);
+    const project_tag = await tagRepositories.findOneById(req.params.id);
+    const project = await projectRepositories.findOneById(
+      project_tag.projectId
+    );
     if (user.email != project.email) res.status(400).end();
     const { project_tag } = req.body;
-    Project_tag.update({ project_tag }, { where: { id: req.params.id } });
+    Project_tag.update({ Project_tag }, { where: { id: req.params.id } });
   } catch (e) {
     console.log(e);
     res.status(400).end();

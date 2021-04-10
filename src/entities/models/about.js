@@ -2,22 +2,24 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "about",
     {
-      username: {
-        type: DataTypes.STRING(20),
+      email: {
         unique: true,
         primaryKey: true,
+        type: DataTypes.STRING,
+      },
+      username: {
+        type: DataTypes.STRING,
       },
       phone_number: {
-        type: DataTypes.STRING(100),
-      },
-      email: {
-        type: DataTypes.STRING(100),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       git_url: {
-        type: DataTypes.STRING(20),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       file_name: {
-        type: DataTypes.STRING(300),
+        type: DataTypes.STRING,
       },
     },
     {

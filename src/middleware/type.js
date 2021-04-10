@@ -1,22 +1,20 @@
 const typeMiddleware = async (req, res, next) => {
   try {
-    const type = req.body.type;
+    const type = req.body.skill_type;
     if (!type) {
       res.status(403).json({ message: "type 빔" });
     }
-    console.log(type);
     if (
       type == "MOSTLANGUAGE" ||
       type == "SUBLANGUAGE" ||
       type == "TOOL" ||
       type == "FRAMEWORK"
     ) {
-      console.log("A");
+      next();
     } else {
-      console.log("z");
-      res.status(402).end();
+      console.log("type error");
+      res.status(402).json({ msssage: "type error" });
     }
-    next();
   } catch (e) {
     res.status(401).json({ message: e.message });
   }

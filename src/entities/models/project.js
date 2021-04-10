@@ -9,23 +9,27 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       email: {
-        type: DataTypes.STRING(100),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       link: {
-        type: DataTypes.STRING(100),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       project_title: {
-        type: DataTypes.STRING(100),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       project_content: {
-        type: DataTypes.STRING(100),
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       file_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
       },
     },
-
     {
+      logging: false,
       timestamps: false,
     }
   );

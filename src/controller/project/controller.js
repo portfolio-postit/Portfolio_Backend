@@ -3,6 +3,7 @@ const tagRepositories = require("../../entities/repositories/project_tag");
 const userRepositroes = require("../../entities/repositories/user");
 const service = require("./service");
 const _ = require("lodash");
+const { Project, Project_tag } = require("../../entities/models");
 
 const createProject = async (req, res, next) => {
   try {
@@ -10,9 +11,9 @@ const createProject = async (req, res, next) => {
     const user = await userRepositroes.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
 
-    const uuidname = service.uploadFile(req.file);
+    const uuidname = await service.uploadFile(req.file);
 
-    project = await Project.create({
+    const project = await Project.create({
       email: user.email,
       file_name: uuidname,
       link,
@@ -20,12 +21,18 @@ const createProject = async (req, res, next) => {
       project_content,
     });
 
-    await project_tag.map((e) => {
-      Project_tag.create({
-        tag: e,
-        projectId: project.id,
+    if (Array.isArray(project_tag))
+      await project_tag.map((e) => {
+        Project_tag.create({
+          tag: e,
+          projectId: project.id,
+        });
       });
-    });
+    else
+      Project_tag.create({
+        tag: project_tag,
+        projectId: Project.id,
+      });
 
     res.status(200).end();
   } catch (e) {
@@ -41,12 +48,18 @@ const addTag = async (req, res, next) => {
     if (!user) res.status(400).end();
     if (user.email != project.email) res.stats(400).end();
     const { project_tag } = req.body;
-    await project_tag.map((e) => {
-      Project_tag.create({
-        tag: e,
-        projectId: project.id,
+    if (Array.isArray(project_tag))
+      await project_tag.map((e) => {
+        Project_tag.create({
+          tag: e,
+          projectId: project.id,
+        });
       });
-    });
+    else
+      Project_tag.create({
+        tag: project_tag,
+        projectId: Project.id,
+      });
     res.status(200).end();
   } catch (e) {
     console.log(e);

@@ -147,6 +147,21 @@ const changeTag = async (req, res, next) => {
     res.status(400).end();
   }
 };
+const changeProject = async (req, res, next) => {
+  const user = await userRepositroes.findOneByEmail(req.decoded.email);
+  const project = await projectRepositories.findOneById(tag.projectId);
+  if (user.email != project.email) res.status(400).end();
+  const { link, project_title, project_content } = req.body;
+  Project.update(
+    { link, project_title, project_content },
+    { where: { id: req.params.id } }
+  );
+  try {
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
 
 module.exports = {
   createProject,
@@ -156,4 +171,5 @@ module.exports = {
   deleteTag,
   readAllRroject,
   changeTag,
+  changeProject,
 };

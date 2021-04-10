@@ -5,7 +5,6 @@ const controller = require("../controller/skill/controller");
 const auth = require("../middleware/auth");
 const type = require("../middleware/type");
 const s3 = require("../controller/s3/controller");
-const { route } = require("./users");
 router.post(
   "/",
   auth.authMiddleware,
@@ -13,7 +12,8 @@ router.post(
   type.typeMiddleware,
   controller.write
 );
+router.patch("/:id", type.typeMiddleware, controller.changeSkill);
 router.get("/", controller.showAllSkill);
 router.get("/type", controller.showTypeSkill);
-router.delete("/", auth.authMiddleware, s3.deleteS3);
+router.delete("/:id", auth.authMiddleware, s3.deleteS3);
 module.exports = router;

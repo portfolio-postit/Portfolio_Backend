@@ -1,26 +1,16 @@
 const { About } = require("../../entities/models");
-const query = require("./query");
-const uuid = require("uuid4");
-const { extname } = require("path");
-const s3 = require("../../config/s3");
-
+const service = require("./service");
+const aboutRepositories = require("../../entities/repositories/about");
+const userRepositroes = require("../../entities/repositories/user");
 const createAbout = async (req, res, next) => {
   try {
     const { phone_number, git_url } = req.body;
-    const user = await query.findOneByEmail(req.decoded.email);
+    const user = await userRepositroes.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
-    const blob = req.file.buffer;
-    const filename = uuid();
-    const uuidname = filename + extname(req.file.originalname);
-    const params = {
-      Bucket: "toinin",
-      Key: uuidname,
-      Body: blob,
-    };
+    const about = await aboutRepositories.findOneByEmail(user.email);
+    if (about) res.status(400).end();
 
-    s3.upload(params, function (err, data) {
-      console.log(err, data);
-    });
+    const uuidname = service.uploadFile(req.file);
 
     await About.create({
       username: user.name,
@@ -29,7 +19,6 @@ const createAbout = async (req, res, next) => {
       git_url,
       file_name: uuidname,
     });
-
     res.status(200).end();
   } catch (e) {
     console.log(e);
@@ -39,7 +28,7 @@ const createAbout = async (req, res, next) => {
 
 const readAbout = async (req, res) => {
   try {
-    const about = await query.findOneByAboutEmail(req.params.email);
+    const about = await aboutRepositories.findOneByEmail(req.params.email);
     const response = _.map(about, (e) => {
       e.url = process.env.S3URL + e.file_name;
       return _.pick(e, ["url", "username", "phone_number", "git_url", "email"]);
@@ -54,9 +43,9 @@ const readAbout = async (req, res) => {
 
 const deleteAbout = async (req, res, next) => {
   try {
-    const user = await query.findOneByEmail(req.decoded.email);
+    const user = await userRepositroes.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
-    const about = await About.findOne({ where: { email: user.email } });
+    const about = await aboutRepositories.findOneByEmail(user.email);
     About.destroy({
       where: { username: user.name },
     });
@@ -70,8 +59,21 @@ const deleteAbout = async (req, res, next) => {
     res.status(400).end();
   }
 };
+
+const changeAbout = async (req, res, next) => {
+  try {
+    const user = await userRepositroes.findOneByEmail(req.decoded.email);
+    if (!user) res.status(400).end();
+    const { phone_number, git_url } = req.body;
+    About.update({ phone_number, git_url }, { where: { email: user.email } });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
 module.exports = {
   createAbout,
   readAbout,
   deleteAbout,
+  changeAbout,
 };

@@ -9,6 +9,7 @@ router.post(
   upload.single("image"),
   controller.createAbout
 );
+// router.put();
 router.get("/:email", controller.readAbout);
 router.delete("/", auth.authMiddleware, controller.deleteAbout);
 module.exports = router;

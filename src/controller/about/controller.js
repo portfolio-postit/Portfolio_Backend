@@ -7,11 +7,12 @@ const createAbout = async (req, res, next) => {
     const { phone_number, git_url } = req.body;
     const user = await userRepositroes.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
-    const about = await aboutRepositories.findOneByEmail(user.email);
-    if (about) res.status(400).end();
+    // const about = await aboutRepositories.findOneByEmail(user.email);
+    // if (about) res.status(400).end();
 
-    const uuidname = service.uploadFile(req.file);
-
+    const file = req.file;
+    const uuidname = await service.uploadFile(file);
+    console.log(uuidname);
     await About.create({
       username: user.name,
       phone_number,

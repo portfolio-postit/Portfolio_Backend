@@ -2,6 +2,8 @@ const { About } = require("../../entities/models");
 const service = require("./service");
 const aboutRepositories = require("../../entities/repositories/about");
 const userRepositroes = require("../../entities/repositories/user");
+const _ = require("lodash");
+
 const createAbout = async (req, res, next) => {
   try {
     const { phone_number, git_url } = req.body;
@@ -30,11 +32,16 @@ const createAbout = async (req, res, next) => {
 const readAbout = async (req, res) => {
   try {
     const about = await aboutRepositories.findOneByEmail(req.params.email);
-    const response = _.map(about, (e) => {
-      e.url = process.env.S3URL + e.file_name;
-      return _.pick(e, ["url", "username", "phone_number", "git_url", "email"]);
-    });
-    res.status(200).send({ response });
+    const response = _.pick(about, [
+      "username",
+      "phone_number",
+      "git_url",
+      "email",
+      "file_name",
+    ]);
+    response.url = process.env.S3URL + about.file_name;
+
+    res.status(200).send(response);
     res.status(200).json(about);
   } catch (e) {
     console.log(e);

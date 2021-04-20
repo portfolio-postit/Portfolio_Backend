@@ -7,7 +7,15 @@ const { Project, Project_tag } = require("../../entities/models");
 
 const createProject = async (req, res, next) => {
   try {
-    const { link, project_title, project_content, project_tag } = req.body;
+    const {
+      link,
+      project_title,
+      project_content,
+      project_tag,
+      member,
+      progress,
+      contribution,
+    } = req.body;
     const user = await userRepositroes.findOneByEmail(req.decoded.email);
     if (!user) res.status(400).end();
 
@@ -19,6 +27,9 @@ const createProject = async (req, res, next) => {
       link,
       project_title,
       project_content,
+      member,
+      progress,
+      contribution,
     });
 
     if (Array.isArray(project_tag))
@@ -72,7 +83,6 @@ const readDetailProject = async (req, res) => {
     const project = await projectRepositories.findOneById(req.params.id);
     const project_tag = await tagRepositories.findAllByProjectId(project.id);
     const response = project;
-    response.dataValues.url = process.env.S3URL + project.file_name;
     response.dataValues.tag = project_tag;
     res.status(200).json({ response });
   } catch (e) {
@@ -151,9 +161,16 @@ const changeProject = async (req, res, next) => {
   const user = await userRepositroes.findOneByEmail(req.decoded.email);
   const project = await projectRepositories.findOneById(tag.projectId);
   if (user.email != project.email) res.status(400).end();
-  const { link, project_title, project_content } = req.body;
+  const {
+    link,
+    project_title,
+    project_content,
+    member,
+    progress,
+    contribution,
+  } = req.body;
   Project.update(
-    { link, project_title, project_content },
+    { link, project_title, project_content, member, progress, contribution },
     { where: { id: req.params.id } }
   );
   try {

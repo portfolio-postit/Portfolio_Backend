@@ -27,6 +27,15 @@ module.exports = (sequelize, DataTypes) => {
       file_name: {
         type: DataTypes.STRING,
       },
+      member: {
+        type: DataTypes.INTEGER,
+      },
+      Contribution: {
+        type: DataTypes.INTEGER,
+      },
+      Progress: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       logging: false,

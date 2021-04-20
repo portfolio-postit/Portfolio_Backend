@@ -30,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       member: {
         type: DataTypes.INTEGER,
       },
-      Contribution: {
+      contribution: {
         type: DataTypes.INTEGER,
       },
-      Progress: {
+      progress: {
         type: DataTypes.INTEGER,
       },
     },

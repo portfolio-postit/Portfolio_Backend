@@ -94,7 +94,14 @@ const readDetailProject = async (req, res) => {
 const readAllRroject = async (req, res) => {
   try {
     const project = await projectRepositories.findAllByEmail(req.params.email);
-    res.status(200).json({ project });
+    const response = await Promise.all(
+      project.map(async (e) => {
+        e.dataValues.tag = await tagRepositories.findAllByProjectId(e.id);
+        return e;
+      })
+    );
+    console.log(project);
+    res.status(200).json({ project: response });
   } catch (e) {
     console.log(e);
     res.status(400).end();

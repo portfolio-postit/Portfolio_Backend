@@ -1,7 +1,9 @@
-FROM node:14-slim
+FROM node:14
 
 COPY ./package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY ./ .
+EXPOSE 8080
+
 CMD ["npm", "start"]

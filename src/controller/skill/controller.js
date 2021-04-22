@@ -25,7 +25,7 @@ const write = async (req, res, next) => {
 
 const showAllSkill = async (req, res) => {
   try {
-    const { email } = req.qeury;
+    const { email } = req.params;
     const skill = await repositories.findAllByEmail(email);
     if (!skill) res.status(400);
 
@@ -50,7 +50,7 @@ const showAllSkill = async (req, res) => {
 
 const showTypeSkill = async (req, res) => {
   try {
-    const { email, type } = req.qeury;
+    const { email, type } = req.params;
     const skill = await repositories.findAllByType(email, type);
     if (!skill) res.status(400);
 

@@ -13,7 +13,7 @@ router.post(
   controller.write
 );
 router.patch("/:id", type.typeMiddleware, controller.changeSkill);
-router.get("/", controller.showAllSkill);
-router.get("/type", controller.showTypeSkill);
+router.get("/:email", controller.showAllSkill);
+router.get("/:email/:type", controller.showTypeSkill);
 router.delete("/:id", auth.authMiddleware, s3.deleteS3);
 module.exports = router;

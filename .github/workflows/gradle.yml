@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: docker image build
-        # run: docker build -t portfolio .
+        run: docker build -t portfolio .
 
       - name: upload to registry
         uses: elgohr/Publish-Docker-Github-Action@master

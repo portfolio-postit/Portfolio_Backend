@@ -29,6 +29,7 @@ const refreshMiddleware = async (req, res, next) => {
     });
   } catch (e) {
     res.status(401).json({ message: e.message });
+    console.log(e);
   }
 };
 

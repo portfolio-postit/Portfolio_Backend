@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-//orm sequelize model:generate --name User --attributes name:string,email:string,password:string
+//orm sequelize model:generate --name User --attributes name:string,email:string,password:strings
 db.User = require("./user")(sequelize, Sequelize);
 db.About = require("./about")(sequelize, Sequelize);
 db.Skill = require("./skill")(sequelize, Sequelize);

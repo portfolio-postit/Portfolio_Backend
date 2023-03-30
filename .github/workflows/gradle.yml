@@ -29,7 +29,7 @@ jobs:
         run: docker build -t portfolio .
 
       - name: upload to registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: toinin4795/portfolio
           username: ${{ secrets.DOCKER_USERNAME }}
